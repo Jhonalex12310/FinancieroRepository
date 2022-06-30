@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoggerFacade {	
+public class LoggerFacade {	 
 		
 	static Logger logger = null;
 	
