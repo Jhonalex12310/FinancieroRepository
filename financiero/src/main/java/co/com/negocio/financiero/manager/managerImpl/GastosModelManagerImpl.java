@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import co.com.negocio.financiero.abstractFactory.DAOAbstractFactory;
+import co.com.negocio.financiero.abstractFactoryImpl.GastosModelDaoFactoryImpl;
 import co.com.negocio.financiero.manager.GastosModelManager;
 import co.com.negocio.financiero.model.dto.GastosModelDTO;
 import co.com.negocio.financiero.utilidades.ConversorPesos;
@@ -17,10 +17,9 @@ import co.com.negocio.financiero.utilidades.GastosModelUtil;
 @Transactional
 @Component("GastosModelManagerImpl")
 public class GastosModelManagerImpl implements GastosModelManager {
-
 	
 	@Autowired	
-	private DAOAbstractFactory lDAOAbstractFactory;
+	private GastosModelDaoFactoryImpl lDAOAbstractFactory;
 	
 	@Autowired	
 	private ConversorPesos lConversorPesos;
@@ -34,7 +33,7 @@ public class GastosModelManagerImpl implements GastosModelManager {
 		ArrayList<GastosModelDTO> lGastosModelDTO = new ArrayList<GastosModelDTO>();
 		ArrayList<GastosModelDTO> lRetorno = new ArrayList<GastosModelDTO>();
 		
-		lGastosModelDTO = (ArrayList<GastosModelDTO>) lDAOAbstractFactory.getGastosModelDao().obtenerTotalRegistros(pUsuario);		
+		lGastosModelDTO = (ArrayList<GastosModelDTO>) lDAOAbstractFactory.ObtenerDao().obtenerTotalRegistros(pUsuario);		
 
 		
 		if(lGastosModelDTO.size() > 0) {
@@ -176,7 +175,7 @@ public class GastosModelManagerImpl implements GastosModelManager {
 
 		boolean lRetorno = false;
 		
-		lRetorno = lDAOAbstractFactory.getGastosModelDao().ActualizarRegisto(pObjetoEntrada);
+		lRetorno = lDAOAbstractFactory.ObtenerDao().ActualizarRegisto(pObjetoEntrada);
 		
 		return lRetorno;
 	}
@@ -186,7 +185,7 @@ public class GastosModelManagerImpl implements GastosModelManager {
 
 		boolean lRetorno = false;
 		
-		lRetorno = lDAOAbstractFactory.getGastosModelDao().InsertarRegisto(pObjetoEntrada);
+		lRetorno = lDAOAbstractFactory.ObtenerDao().InsertarRegisto(pObjetoEntrada);
 		
 		return lRetorno;
 	}
@@ -196,7 +195,7 @@ public class GastosModelManagerImpl implements GastosModelManager {
 
 		boolean lRetorno = false;
 		
-		lRetorno = lDAOAbstractFactory.getGastosModelDao().EliminarRegisto(pObjetoEntrada);
+		lRetorno = lDAOAbstractFactory.ObtenerDao().EliminarRegisto(pObjetoEntrada);
 		
 		return lRetorno;
 	}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface GastosModelDao {
 	
-ArrayList<?> obtenerTotalRegistros(String pUsuario) throws Exception;
+	ArrayList<?> obtenerTotalRegistros(String pUsuario) throws Exception;
 	
 	boolean ActualizarRegisto(Object pObjetoEntrada) throws Exception;
 	

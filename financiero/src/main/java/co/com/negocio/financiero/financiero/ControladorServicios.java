@@ -1,6 +1,6 @@
 package co.com.negocio.financiero.financiero;
 
-import java.math.BigDecimal;
+
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +22,9 @@ import co.com.negocio.financiero.model.dto.BalanceUsuarioModelDTO;
 import co.com.negocio.financiero.model.dto.GastosModelDTO;
 import co.com.negocio.financiero.model.dto.ParametrosModelDTO;
 import co.com.negocio.financiero.model.dto.UsuariosModelDTO;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 @RestController
@@ -48,7 +49,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/consultaUsuarios",
 				consumes = MediaType.APPLICATION_JSON_VALUE, 
 				produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<UsuariosModelDTO>> consultaUsuarios(@RequestBody  
+	public ResponseEntity<Object> consultaUsuarios(@RequestBody  
 			UsuariosModelDTO pUsuariosModelDTO) 
 					throws Exception {
 		
@@ -63,7 +64,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/modificacionUsuarios",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  modificacionUsuarios (@RequestBody  
+	public ResponseEntity<Object>  modificacionUsuarios (@RequestBody  
 			UsuariosModelDTO pUsuariosModelDTO) 
 					throws Exception {
 		
@@ -77,7 +78,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/insercionUsuarios",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  insercionUsuarios(@RequestBody  
+	public ResponseEntity<Object>  insercionUsuarios(@RequestBody  
 			UsuariosModelDTO pUsuariosModelDTO) 
 					throws Exception {
 		
@@ -91,7 +92,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/eliminacionUsuarios",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  elmininacionUsuarios(@RequestBody  
+	public ResponseEntity<Object>  elmininacionUsuarios(@RequestBody  
 			UsuariosModelDTO pUsuariosModelDTO) 
 					throws Exception {
 		
@@ -105,7 +106,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/consultaParametros",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<ParametrosModelDTO>> consultaParametros(@RequestBody  
+	public ResponseEntity<Object> consultaParametros(@RequestBody  
 			ParametrosModelDTO pParametrosModelDTO) 
 					throws Exception {
 		
@@ -120,7 +121,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/modificacionParametros",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  modificacionParametros (@RequestBody  
+	public ResponseEntity<Object>  modificacionParametros (@RequestBody  
 			ParametrosModelDTO pParametrosModelDTO) 
 					throws Exception {
 		
@@ -134,7 +135,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/insercionParametros",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  insercionParametros(@RequestBody  
+	public ResponseEntity<Object>  insercionParametros(@RequestBody  
 			ParametrosModelDTO pParametrosModelDTO) 
 					throws Exception {
 		
@@ -148,7 +149,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/elmininacionParametros",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  elmininacionParametros(@RequestBody  
+	public ResponseEntity<Object>  elmininacionParametros(@RequestBody  
 			ParametrosModelDTO pParametrosModelDTO) 
 					throws Exception {
 		
@@ -162,16 +163,34 @@ public class ControladorServicios {
 	@PostMapping(path ="/consultaGastos",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<GastosModelDTO>> consultaGastos(@RequestBody  
+	@ApiOperation(value = "consulta Gastos", httpMethod = "POST", notes="Consulta el detalle de gastos según parametros")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message="SUCCESSFUL", response = GastosModelDTO.class),
+			@ApiResponse(code = 400, message="BAD REQUEST"),
+			@ApiResponse(code = 500, message="INTERNAL SERVER ERROR")			
+	})
+	public ResponseEntity<Object> consultaGastos(@RequestBody  
 			GastosModelDTO pGastosModelDTO) 
 					throws Exception {
 		
 		ArrayList<GastosModelDTO> lGastosModelDTOArray = new ArrayList<GastosModelDTO>();
+		
+		if(pGastosModelDTO.getUsuario() == null  || 
+				pGastosModelDTO.getEfectivo() == null || 
+					pGastosModelDTO.getQuincenaUno() == null) {
+			
+			return new ResponseEntity<> (null, HttpStatus.BAD_REQUEST);
+			
+		} 	
+		
 		lGastosModelDTOArray = (ArrayList<GastosModelDTO>) lGastosModelManagerImpl.consultarRegistros(pGastosModelDTO.getEfectivo(),
 				pGastosModelDTO.getQuincenaUno(),
-				pGastosModelDTO.getUsuario().toString());
-	
-		return new ResponseEntity<>(lGastosModelDTOArray, HttpStatus.OK);
+				pGastosModelDTO.getUsuario().toString());		
+			
+		return new ResponseEntity<>(lGastosModelDTOArray.size() > 1 ? lGastosModelDTOArray: null, 
+				lGastosModelDTOArray.size() > 1 ? HttpStatus.OK: HttpStatus.NO_CONTENT);
+		
+		
 		
 	}
 	
@@ -179,7 +198,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/modificacionGastos",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  modificacionGastos (@RequestBody  
+	public ResponseEntity<Object>  modificacionGastos (@RequestBody  
 			GastosModelDTO pGastosModelDTO) 
 					throws Exception {
 		
@@ -193,7 +212,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/insercionGastos",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  insercionGastos(@RequestBody  
+	public ResponseEntity<Object>  insercionGastos(@RequestBody  
 			GastosModelDTO pGastosModelDTO) 
 					throws Exception {
 		
@@ -207,7 +226,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/eliminacionGastos",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean>  elmininacionGastos(@RequestBody  
+	public ResponseEntity<Object>  elmininacionGastos(@RequestBody  
 			GastosModelDTO pGastosModelDTO) 
 					throws Exception {
 		
@@ -222,7 +241,7 @@ public class ControladorServicios {
 	@PostMapping(path ="/BalanceGeneral",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<BalanceUsuarioModelDTO>> BalanceGeneral (@RequestBody  
+	public ResponseEntity<Object> BalanceGeneral (@RequestBody  
 			UsuariosModelDTO pUsuariosModelDTO) 
 			throws Exception {
 		
@@ -235,70 +254,6 @@ public class ControladorServicios {
 		lGastosModelBalanceUsuarioDTO = (ArrayList<BalanceUsuarioModelDTO>) lGastosModelOperacionesManager.obtenerBalanceGeneral(pUsuariosModelDTO.getIdUsuario().toString());
 		return new ResponseEntity<>(lGastosModelBalanceUsuarioDTO,responseHeaders, HttpStatus.OK);
 		
-	}
+	}	
 	
-	
-	@CrossOrigin(origins = lCrossOrigins)
-	@GetMapping("/ConsultaGastos/{usuario}/{quin1}/{efec}")
-	public ResponseEntity<ArrayList<GastosModelDTO>> 
-		ConsultaGastos(@PathVariable String usuario,
-				@PathVariable String quin1,
-				@PathVariable String efec) 
-				throws Exception {
-		URI location = URI.create("control_gastos_api");
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(location);
-	    responseHeaders.set("MyResponseHeader", "MyValue");
-		ArrayList<GastosModelDTO> lGastosModelBalanceUsuarioDTO = new ArrayList<GastosModelDTO>();
-		lGastosModelBalanceUsuarioDTO = (ArrayList<GastosModelDTO>) lGastosModelManagerImpl.consultarRegistros(efec,quin1,usuario);
-		return new ResponseEntity<>(lGastosModelBalanceUsuarioDTO,responseHeaders, HttpStatus.OK);
-		
-	}
-	
-	@GetMapping("/modificarGastos/{name}")
-	public ResponseEntity<Boolean> 
-	   modificarGastos(@PathVariable String name) 
-			   throws Exception {
-		
-		GastosModelDTO lGastosModelBalanceUsuarioDTO = new GastosModelDTO();
-		
-		lGastosModelBalanceUsuarioDTO.setDescripcion("GAME PASS");
-		lGastosModelBalanceUsuarioDTO.setEfectivo("N");
-		lGastosModelBalanceUsuarioDTO.setQuincenaDos("N");
-		lGastosModelBalanceUsuarioDTO.setQuincenaUno("A");
-		lGastosModelBalanceUsuarioDTO.setIdGastos(new BigDecimal(20));
-		lGastosModelBalanceUsuarioDTO.setUsuario(name);
-		lGastosModelBalanceUsuarioDTO.setValor(new BigDecimal(29900));
-		
-		
-		
-		boolean lRetorno = true;
-		lRetorno = lGastosModelManagerImpl.EliminarRegisto(lGastosModelBalanceUsuarioDTO);
-		return new ResponseEntity<>(lRetorno, HttpStatus.OK);
-	}
-	
-	@GetMapping("/ConsultaParametros/{name}")
-	public ResponseEntity<ArrayList<ParametrosModelDTO>>  
-	ConsultaParametros (@PathVariable String name) 
-			throws Exception {
-		
-		ArrayList<ParametrosModelDTO> lGastosModelBalanceUsuarioDTO = new ArrayList<ParametrosModelDTO>();
-		lGastosModelBalanceUsuarioDTO = (ArrayList<ParametrosModelDTO>) lGastosModelManagerParametrosImpl.consultarRegistros(null,null,name);
-		return new ResponseEntity<>(lGastosModelBalanceUsuarioDTO, HttpStatus.OK);
-	}
-	
-	
-	@GetMapping("/modificacionParametros/{name}")
-	public ResponseEntity<Boolean>  modificacionParametros (@PathVariable/*(value = "name", defaultValue = "1030568079") */String name) throws Exception {
-		ParametrosModelDTO lGastosModelBalanceUsuarioDTO = new ParametrosModelDTO();
-		lGastosModelBalanceUsuarioDTO.setDescripcion("SALUD");
-		lGastosModelBalanceUsuarioDTO.setIdParametro(new BigDecimal(15));
-		lGastosModelBalanceUsuarioDTO.setValor(new BigDecimal(4));
-		lGastosModelBalanceUsuarioDTO.setIdUsuario(name);
-		
-		boolean lRetorno = true;
-		lRetorno = lGastosModelManagerParametrosImpl.InsertarRegisto(lGastosModelBalanceUsuarioDTO);
-		return new ResponseEntity<>(lRetorno, HttpStatus.OK);
-	}
-
 }

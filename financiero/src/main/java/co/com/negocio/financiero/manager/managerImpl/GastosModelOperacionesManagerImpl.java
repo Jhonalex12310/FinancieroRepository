@@ -51,7 +51,7 @@ public class GastosModelOperacionesManagerImpl implements GastosModelOperaciones
 		ArrayList<ParametrosModelDTO> lGastosModelParametrosDTO = new ArrayList<ParametrosModelDTO>();
 		ArrayList<GastosModelDTO> lGastosModelDTO = new ArrayList<GastosModelDTO>();
 		
-		int lTamanioArreglo =0;
+		int lTamanioArreglo = 0 ;
 		try {
 			
 			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_GENERICO, null);
@@ -151,8 +151,7 @@ public class GastosModelOperacionesManagerImpl implements GastosModelOperaciones
 			
 			lBalanceUsuarioModelDTO.add(lBalanceUsuarioModelDTOVO);
 			
-		}
-		
+		}		
 		
 		return lBalanceUsuarioModelDTO;
 	}
