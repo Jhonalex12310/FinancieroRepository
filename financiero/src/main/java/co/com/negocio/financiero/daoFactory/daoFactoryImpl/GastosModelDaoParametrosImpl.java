@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import co.com.negocio.financiero.daoFactory.GastosModelDao;
-import co.com.negocio.financiero.facade.LoggerFacade;
+import co.com.negocio.financiero.daoFactory.GastosModelDaoInt;
+import co.com.negocio.financiero.facade.ObservadorEventosFacadeInt;
 import co.com.negocio.financiero.model.dto.ParametrosModelDTO;
 import co.com.negocio.financiero.model.entity.ParametrosEntity;
 import co.com.negocio.financiero.utilidades.GastosModelUtil;
@@ -22,10 +22,10 @@ import co.com.negocio.financiero.utilidades.GastosModelUtil;
 @Repository
 @Transactional
 @Component("GastosModelDaoParametrosImpl")
-public class GastosModelDaoParametrosImpl implements GastosModelDao {
+public class GastosModelDaoParametrosImpl implements GastosModelDaoInt {
 
 	@Autowired
-	private LoggerFacade lLoggerFacade;
+	private ObservadorEventosFacadeInt lLoggerFacade;
 	
 	@PersistenceContext
 	private EntityManager lEntityManager;
@@ -59,7 +59,7 @@ public class GastosModelDaoParametrosImpl implements GastosModelDao {
 			
 		} catch (Exception ex) {
 			
-			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_BASE_DATOS, ex);
+			lLoggerFacade.InsertarErrorConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_BASE_DATOS, ex);
 			
 		}
 		
@@ -82,7 +82,7 @@ public class GastosModelDaoParametrosImpl implements GastosModelDao {
 		} catch (Exception ex) {
 			
 			lRetorno = false ;
-			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_ACTUALIZACION_BASE_DATOS, ex);
+			lLoggerFacade.InsertarErrorConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_ACTUALIZACION_BASE_DATOS, ex);
 			
 		}  
 		
@@ -105,7 +105,7 @@ public class GastosModelDaoParametrosImpl implements GastosModelDao {
 		} catch (Exception ex) {
 			
 			lRetorno = false;
-			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_INSERCION_BASE_DATOS, ex);
+			lLoggerFacade.InsertarErrorConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_INSERCION_BASE_DATOS, ex);
 			
 		}  
 		
@@ -128,7 +128,7 @@ public class GastosModelDaoParametrosImpl implements GastosModelDao {
 		} catch (Exception ex) {
 			
 			lRetorno = false;
-			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_BORRADO_BASE_DATOS, ex);
+			lLoggerFacade.InsertarErrorConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_BORRADO_BASE_DATOS, ex);
 			
 		}  
 		

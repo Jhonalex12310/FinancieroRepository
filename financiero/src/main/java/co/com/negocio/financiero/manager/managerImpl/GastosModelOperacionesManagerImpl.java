@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import co.com.negocio.financiero.facade.LoggerFacade;
-import co.com.negocio.financiero.manager.GastosModelManager;
-import co.com.negocio.financiero.manager.GastosModelOperacionesManager;
+import co.com.negocio.financiero.facade.ObservadorEventosFacadeInt;
+import co.com.negocio.financiero.manager.GastosModelManagerInt;
+import co.com.negocio.financiero.manager.GastosModelOperacionesManagerInt;
 import co.com.negocio.financiero.model.dto.BalanceUsuarioModelDTO;
 import co.com.negocio.financiero.model.dto.GastosModelDTO;
 import co.com.negocio.financiero.model.dto.ParametrosModelDTO;
@@ -21,22 +21,22 @@ import co.com.negocio.financiero.utilidades.GastosModelUtil;
 
 @Service
 @Transactional
-public class GastosModelOperacionesManagerImpl implements GastosModelOperacionesManager {	
+public class GastosModelOperacionesManagerImpl implements GastosModelOperacionesManagerInt {	
 	
 	@Autowired
-	private LoggerFacade lLoggerFacade;
+	private ObservadorEventosFacadeInt lLoggerFacade;
 	
 	@Autowired
 	@Qualifier(value="GastosModelManagerUsuariosImpl")
-	private GastosModelManager lGastosModelManagerUsuarios;
+	private GastosModelManagerInt lGastosModelManagerUsuarios;
 	
 	@Autowired
 	@Qualifier(value="GastosModelManagerParametrosImpl")
-	private GastosModelManager lGastosModelManagerParametros;
+	private GastosModelManagerInt lGastosModelManagerParametros;
 
 	@Autowired
 	@Qualifier(value="GastosModelManagerImpl")
-	private GastosModelManager lGastosModelManagerImpl;
+	private GastosModelManagerInt lGastosModelManagerImpl;
 	
 	@Autowired	
 	private ConversorPesos lConversorPesos;	
@@ -54,7 +54,7 @@ public class GastosModelOperacionesManagerImpl implements GastosModelOperaciones
 		int lTamanioArreglo = 0 ;
 		try {
 			
-			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_GENERICO, null);
+			lLoggerFacade.InsertarMensajeConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_GENERICO, null);
 			
 			lGastosModelUsuarioDTO = (ArrayList<UsuariosModelDTO>) lGastosModelManagerUsuarios.consultarRegistros(null, null, pUsuario);
 			
@@ -130,7 +130,7 @@ public class GastosModelOperacionesManagerImpl implements GastosModelOperaciones
 			
 		} catch (Exception ex) {
 			
-			lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_GENERICO, ex);
+			lLoggerFacade.InsertarErrorConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONSULTA_GENERICO, ex);
 			
 		}
 		

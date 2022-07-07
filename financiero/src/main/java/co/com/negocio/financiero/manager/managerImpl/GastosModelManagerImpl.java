@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import co.com.negocio.financiero.abstractFactoryImpl.GastosModelDaoFactoryImpl;
-import co.com.negocio.financiero.manager.GastosModelManager;
+import co.com.negocio.financiero.abstractFactory.DAOAbstractFactory;
+import co.com.negocio.financiero.manager.GastosModelManagerInt;
 import co.com.negocio.financiero.model.dto.GastosModelDTO;
 import co.com.negocio.financiero.utilidades.ConversorPesos;
 import co.com.negocio.financiero.utilidades.GastosModelUtil;
@@ -16,10 +17,11 @@ import co.com.negocio.financiero.utilidades.GastosModelUtil;
 @Service
 @Transactional
 @Component("GastosModelManagerImpl")
-public class GastosModelManagerImpl implements GastosModelManager {
+public class GastosModelManagerImpl implements GastosModelManagerInt {
 	
 	@Autowired	
-	private GastosModelDaoFactoryImpl lDAOAbstractFactory;
+	@Qualifier("GastosModelDaoFactoryImpl")
+	private DAOAbstractFactory lDAOAbstractFactory;
 	
 	@Autowired	
 	private ConversorPesos lConversorPesos;

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.com.negocio.financiero.facade.LoggerFacade;
+import co.com.negocio.financiero.facade.ObservadorEventosFacadeInt;
 
 @Service
 public class ConversorPesos {	
@@ -13,7 +13,7 @@ public class ConversorPesos {
 	private static final String SIGNO_PESOS = "$ ";
 	
 	@Autowired
-	private LoggerFacade lLoggerFacade;
+	private ObservadorEventosFacadeInt lLoggerFacade;
 	
 	
 	public String valorConvertido(BigDecimal pValorEntrada) {
@@ -43,17 +43,9 @@ public class ConversorPesos {
 
 			try {
 				
-				lLoggerFacade.insertarError(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONVERSION, ex);
+				lLoggerFacade.InsertarErrorConsole(this.getClass().getName(), GastosModelUtil.UtilitiesGeneral.ERROR_CONVERSION, ex);
 				
 			} catch (ClassNotFoundException e) {
-				
-				e.printStackTrace();
-				
-			} catch (InstantiationException e) {
-				
-				e.printStackTrace();
-				
-			} catch (IllegalAccessException e) {
 				
 				e.printStackTrace();
 				

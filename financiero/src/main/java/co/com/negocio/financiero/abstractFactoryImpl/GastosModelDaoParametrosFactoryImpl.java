@@ -5,18 +5,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import co.com.negocio.financiero.abstractFactory.DAOAbstractFactory;
-import co.com.negocio.financiero.daoFactory.GastosModelDao;
-import co.com.negocio.financiero.daoFactory.daoFactoryImpl.GastosModelDaoParametrosImpl;
+import co.com.negocio.financiero.daoFactory.GastosModelDaoInt;
 
 @Component("GastosModelDaoParametrosFactoryImpl")
 public class GastosModelDaoParametrosFactoryImpl extends DAOAbstractFactory {
 	
 	@Autowired
 	@Qualifier(value="GastosModelDaoParametrosImpl")
-	private GastosModelDaoParametrosImpl lGastosModelDaoParametrosImpl;
+	private GastosModelDaoInt lGastosModelDaoParametrosImpl;
 	
 	@Override
-	public GastosModelDao ObtenerDao() {
+	public GastosModelDaoInt ObtenerDao() {
 		
 		return lGastosModelDaoParametrosImpl;
 		

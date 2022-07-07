@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.negocio.financiero.manager.GastosModelOperacionesManager;
-import co.com.negocio.financiero.manager.managerImpl.GastosModelManagerImpl;
-import co.com.negocio.financiero.manager.managerImpl.GastosModelManagerParametrosImpl;
-import co.com.negocio.financiero.manager.managerImpl.GastosModelManagerUsuariosImpl;
+import co.com.negocio.financiero.manager.GastosModelManagerInt;
+import co.com.negocio.financiero.manager.GastosModelOperacionesManagerInt;
 import co.com.negocio.financiero.model.dto.BalanceUsuarioModelDTO;
 import co.com.negocio.financiero.model.dto.GastosModelDTO;
 import co.com.negocio.financiero.model.dto.ParametrosModelDTO;
@@ -33,18 +32,22 @@ public class ControladorServicios {
 	private final static String lCrossOrigins = "http://192.168.20.22:8100";
 	
 	@Autowired
-	private	GastosModelManagerUsuariosImpl lGastosModelManagerUsuariosImpl;
+	@Qualifier("GastosModelManagerUsuariosImpl")
+	private	GastosModelManagerInt lGastosModelManagerUsuariosImpl;
 	
 	@Autowired
-	private	GastosModelManagerImpl lGastosModelManagerImpl;
+	@Qualifier("GastosModelManagerImpl")
+	private	GastosModelManagerInt lGastosModelManagerImpl;
 	
 	@Autowired
-	private	GastosModelManagerParametrosImpl lGastosModelManagerParametrosImpl;
+	@Qualifier("GastosModelManagerParametrosImpl")
+	private	GastosModelManagerInt lGastosModelManagerParametrosImpl;
 	
 	@Autowired
-	private GastosModelOperacionesManager lGastosModelOperacionesManager;
+	private GastosModelOperacionesManagerInt lGastosModelOperacionesManager;
 	
 	
+	@SuppressWarnings("unchecked")
 	@CrossOrigin(origins = lCrossOrigins)
 	@PostMapping(path ="/consultaUsuarios",
 				consumes = MediaType.APPLICATION_JSON_VALUE, 
@@ -102,6 +105,7 @@ public class ControladorServicios {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@CrossOrigin(origins = lCrossOrigins)
 	@PostMapping(path ="/consultaParametros",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
@@ -159,6 +163,7 @@ public class ControladorServicios {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@CrossOrigin(origins = lCrossOrigins)
 	@PostMapping(path ="/consultaGastos",
 			consumes = MediaType.APPLICATION_JSON_VALUE, 

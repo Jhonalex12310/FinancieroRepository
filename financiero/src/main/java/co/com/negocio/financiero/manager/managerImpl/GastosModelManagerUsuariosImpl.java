@@ -5,20 +5,22 @@ import java.util.ArrayList;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import co.com.negocio.financiero.abstractFactoryImpl.GastosModelDaoUsuarioFactoryImpl;
-import co.com.negocio.financiero.manager.GastosModelManager;
+import co.com.negocio.financiero.abstractFactory.DAOAbstractFactory;
+import co.com.negocio.financiero.manager.GastosModelManagerInt;
 import co.com.negocio.financiero.model.dto.UsuariosModelDTO;
 
 @Service
 @Transactional
 @Component("GastosModelManagerUsuariosImpl")
-public class GastosModelManagerUsuariosImpl implements GastosModelManager {
+public class GastosModelManagerUsuariosImpl implements GastosModelManagerInt {
 	
 	@Autowired
-	private GastosModelDaoUsuarioFactoryImpl lDAOAbstractFactory;
+	@Qualifier("GastosModelDaoUsuarioFactoryImpl")
+	private DAOAbstractFactory lDAOAbstractFactory;
 
 	@SuppressWarnings("unchecked")
 	@Override
